@@ -18,7 +18,7 @@ namespace SFSEd
         public string Name { get; }
         public List<SFSNode> Children { get; }
         public List<SFSLeaf> Values { get; }
-        public Entry[] Order { get; }
+        public List<Entry> Order { get; }
 
         public SFSNode(string named)
         {
@@ -26,7 +26,7 @@ namespace SFSEd
             Name = named;
             Children = new List<SFSNode>();
             Values = new List<SFSLeaf>();
-            Order = new Entry[] { };
+            Order = new List<Entry> { };
         }
 
         public string GetFullName()
@@ -43,24 +43,16 @@ namespace SFSEd
 
         public string AsText(string indentation="")
         {
-            string text = $"{indentation}{Name}\n{indentation}\t{{\n";
+            string text = $"{indentation}{Name}\n{indentation}{{\n";
             string innerdent = indentation + "\t";
             foreach (var entry in Order)
             {
                 if (entry.Node != null)
                     text += entry.Node.AsText(innerdent);
                 else if (entry.Leaf.Value != null)
-                {
-                    text += innerdent;
-                    text += entry.Leaf.Key;
-                    if (entry.Leaf.Value.Length > 0)
-                        text += " = " + entry.Leaf.Value + "\n";
-                    else
-                        text += " =\n";
-                }
-                text += $"{innerdent}{entry.Leaf.Key} =\n";
+                    text += $"{innerdent}{entry.Leaf.Key} = {entry.Leaf.Value}\n";
             }
-            text += indentation + "\t";
+            text += indentation + "}\n";
             return text;
         }
 

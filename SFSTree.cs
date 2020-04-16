@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SFSEd
 {
@@ -27,17 +28,13 @@ namespace SFSEd
             {
                 ++root.LineNo;
 
-                // Prune comments
-                int comment = line.IndexOf('#');
-                if (comment < 0)
-                    comment = line.Length;
-
                 // Clean out whitespace and ignore blank lines.
-                string text = line.Substring(0, comment).Trim();
+                string text = line.TrimStart();
                 if (text.Length <= 0)
                     continue;
 
-                if (text == "{")
+                // New scope opening, should follow a label.
+                if (text.StartsWith("{"))
                 {
                     if (string.IsNullOrEmpty(lastLabel))
                         throw new Exception($"{root.LineNo}: Missing label");
@@ -45,7 +42,7 @@ namespace SFSEd
                     SFSNode child = new SFSNode(lastLabel);
                     SFSNode parent = openNodes.Peek();
                     parent.Children.Add(child);
-                    parent.Order.Append(new Entry(child));
+                    parent.Order.Add(new Entry(child));
                     openNodes.Push(child);
 
                     lastLabel = null;
@@ -58,7 +55,8 @@ namespace SFSEd
                 if (lastLabel != null)
                     throw new Exception($"{root.LineNo}: Uncomsumed label: {lastLabel}");
 
-                if (text == "}")
+                // Closing a scope
+                if (text.StartsWith("}"))
                 {
                     if (openNodes.Count <= 1)
                         throw new Exception($"{root.LineNo}: Too many '}}'s");
@@ -69,17 +67,19 @@ namespace SFSEd
                 int equals = text.IndexOf("=", StringComparison.InvariantCulture);
                 if (equals < 0)
                 {
-                    lastLabel = text;
+                    // No equals sign means it was a scope label
+                    lastLabel = text.TrimEnd();
                     continue;
                 }
                 else
                 {
+                    // Otherwise it is a key-value pair
                     string key = text.Substring(0, equals).Trim();
-                    string value = text.Substring(equals + 1).Trim();
+                    string value = text.Substring(equals + 1).TrimStart();
                     var parent = openNodes.Peek();
                     var leaf = new SFSLeaf(key, value);
                     parent.Values.Add(leaf);
-                    parent.Order.Append(new Entry(leaf));
+                    parent.Order.Add(new Entry(leaf));
 
                     ++root.TotalValues;
                 }
@@ -88,9 +88,28 @@ namespace SFSEd
             return root;
         }
 
-        public void WriteToFile(string filename)
+        public string AsText()
         {
-            System.IO.File.WriteAllText(filename + ".new", AsText());
+            // I'm going to go ahead and assume that there's only the one node, called Game.
+            Contract.Requires(Children.Count == 1);
+            Contract.Requires(Values.Count == 0);
+            Contract.Requires(Children[0].Name == "GAME");
+            return Children[0].AsText();
+        }
+
+        public async Task WriteToFile(string filename)
+        {
+            if (File.Exists(filename))
+            {
+                string backup = filename + ".saved";
+                if (File.Exists(backup))
+                {
+                    File.Delete(backup);
+                }
+                File.Move(filename, backup);
+            }
+            string text = await Task<string>.Run(this.AsText).ConfigureAwait(true);
+            await Task.Run(() => File.WriteAllText(filename, text));
         }
 
     };
