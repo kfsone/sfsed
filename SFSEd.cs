@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -119,6 +120,21 @@ namespace SFSEd
         {
             var about = new About();
             about.ShowDialog();
+        }
+
+        private void valueView_DoubleClick(object sender, EventArgs e)
+        {
+            var list = (ListView)sender;
+            Contract.Assert(list.SelectedItems.Count == 1);
+            var entry = (SFSLeaf)list.SelectedItems[0].Tag;
+
+            var editDlg = new ValueEdit(entry);
+            var result = editDlg.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                entry.Value = editDlg.ResultingText;
+                list.SelectedItems[0].SubItems[1].Text = entry.Value;
+            }
         }
     }
 }

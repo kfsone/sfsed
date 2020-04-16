@@ -2,13 +2,16 @@
 {
     public class SFSLeaf
     {
-        public string Key { get; } 
-        public string Value { get; }
+        public string Key { get; }
+        public string Original { get; }
+        public string Value { get; set; }
+        public bool Changed { get => Value == Original; }
 
         public SFSLeaf(string key, string value)
         {
             Key = key;
-            Value = value;
+            Original = value;
+            Value = string.Copy(value);
         }
     };
 }

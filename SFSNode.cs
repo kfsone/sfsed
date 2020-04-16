@@ -65,7 +65,11 @@ namespace SFSEd
             listView.BeginUpdate();
             foreach (var kvPair in Values)
             {
-                listView.Items.Add(new ListViewItem(new[] { kvPair.Key, kvPair.Value }));
+                var value = new ListViewItem(new[] { kvPair.Key, kvPair.Value })
+                {
+                    Tag = kvPair
+                };
+                listView.Items.Add(value);
             }
             listView.View = View.Details;
             listView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);

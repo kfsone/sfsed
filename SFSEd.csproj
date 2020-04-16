@@ -52,6 +52,12 @@
     <Compile Include="About.Designer.cs">
       <DependentUpon>About.cs</DependentUpon>
     </Compile>
+    <Compile Include="ValueEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ValueEdit.Designer.cs">
+      <DependentUpon>ValueEdit.cs</DependentUpon>
+    </Compile>
     <Compile Include="SFSEd.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -78,6 +84,9 @@
     </Compile>
     <EmbeddedResource Include="SFSEd.resx">
       <DependentUpon>SFSEd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ValueEdit.resx">
+      <DependentUpon>ValueEdit.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

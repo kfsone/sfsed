@@ -137,7 +137,7 @@
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.aboutToolStripMenuItem.Text = "&About...";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -199,6 +199,7 @@
             this.valueView.TabIndex = 0;
             this.valueView.UseCompatibleStateImageBehavior = false;
             this.valueView.View = System.Windows.Forms.View.Details;
+            this.valueView.DoubleClick += new System.EventHandler(this.valueView_DoubleClick);
             // 
             // keyHeader
             // 
