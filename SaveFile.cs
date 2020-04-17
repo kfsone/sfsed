@@ -23,7 +23,7 @@ namespace SFSEd
         {
             Contract.Requires(filename != null);
 
-           SaveFile save = new SaveFile();
+            var save = new SaveFile();
 
             // Use a stack to track open Domains, starting with the SaveFile itself.
             var openDomains = new Stack<Domain>();
@@ -36,14 +36,14 @@ namespace SFSEd
             //  }
             // so track labels onto the next line.
             string lastLabel = null;
-            int lineNo = 0;
+            var lineNo = 0;
 
-            foreach (string line in File.ReadLines(filename))
+            foreach (var line in File.ReadLines(filename))
             {
                 ++lineNo;
 
                 // Clean out whitespace and ignore blank lines.
-                string text = line.TrimStart();
+                var text = line.TrimStart();
                 if (text.Length <= 0)
                     continue;
 
@@ -53,8 +53,8 @@ namespace SFSEd
                     if (string.IsNullOrEmpty(lastLabel))
                         throw new Exception($"{lineNo}: Missing label");
 
-                    Domain child = new Domain(lastLabel);
-                    Domain parent = openDomains.Peek();
+                    var child = new Domain(lastLabel);
+                    var parent = openDomains.Peek();
                     parent.domains.Add(child);
                     parent.loadOrder.Add(new OrderingEntry(child));
                     openDomains.Push(child);
@@ -67,7 +67,7 @@ namespace SFSEd
 
                 // labels only ever appear before a {
                 if (lastLabel != null)
-                    throw new Exception($"{lineNo}: Uncomsumed label: {lastLabel}");
+                    throw new Exception($"{lineNo}: Unused label: {lastLabel}");
 
                 // Closing a scope
                 if (text.StartsWith("}"))
@@ -77,7 +77,7 @@ namespace SFSEd
                     var priorDomain = openDomains.Pop();
                     if (priorDomain.name == "VESSEL")
                     {
-                        int partNo = 0;
+                        var partNo = 0;
                         foreach (var child in priorDomain.domains)
                         {
                             if (child.name == "PART")
@@ -87,7 +87,7 @@ namespace SFSEd
                     continue;
                 }
 
-                int equals = text.IndexOf("=", StringComparison.InvariantCulture);
+                var equals = text.IndexOf("=", StringComparison.InvariantCulture);
                 if (equals < 0)
                 {
                     // No equals sign means it was a scope label
@@ -97,8 +97,8 @@ namespace SFSEd
                 else
                 {
                     // Otherwise it is a property, i.e a key-value pair.
-                    string key = text.Substring(0, equals).Trim();
-                    string value = text.Substring(equals + 1).TrimStart();
+                    var key = text.Substring(0, equals).Trim();
+                    var value = text.Substring(equals + 1).TrimStart();
                     var domain = openDomains.Peek();
                     var property = new Property(key, value);
                     domain.properties.Add(property);
@@ -124,14 +124,14 @@ namespace SFSEd
         {
             if (File.Exists(filename))
             {
-                string backup = filename + ".saved";
+                var backup = filename + ".saved";
                 if (File.Exists(backup))
                 {
                     File.Delete(backup);
                 }
                 File.Move(filename, backup);
             }
-            string text = await Task<string>.Run(() => this.AsText(saving: true)).ConfigureAwait(true);
+            var text = await Task.Run(() => this.AsText(saving: true)).ConfigureAwait(true);
             await Task.Run(() => File.WriteAllText(filename, text));
         }
 

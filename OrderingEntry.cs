@@ -8,13 +8,13 @@
     /// </summary>
     public class OrderingEntry
     {
+        public OrderingEntry(Domain subDomain) => this.subDomain = subDomain;
+        public OrderingEntry(Property property) => this.property = property;
+
         #region Members
         public Domain subDomain { get; private set; } = null;
         public Property property { get; private set; } = null;
         #endregion
-
-        public OrderingEntry(Domain subDomain) => this.subDomain = subDomain;
-        public OrderingEntry(Property property) => this.property = property;
     };
 
 }

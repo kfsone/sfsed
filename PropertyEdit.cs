@@ -6,16 +6,15 @@ namespace SFSEd
 {
     public partial class PropertyEdit : Form
     {
-        Property ValueEntry;
-
-        public PropertyEdit(Property valueEntry)
+        public PropertyEdit(Property property)
         {
             InitializeComponent();
-            ValueEntry = valueEntry;
-            Text = $"Edit {valueEntry.key}";
-            originalText.Text = valueEntry.value;
-            currentText.Text = valueEntry.newValue;
-            changedText.Text = valueEntry.newValue;
+
+            Text = $"Edit {property.key}";
+            originalText.Text = property.value;
+            currentText.Text = property.newValue;
+            changedText.Text = property.newValue;
+
             // you don't appear to be able to change the foreground color of read-only
             // input boxes unless you first change the background color, which is fun.
             currentText.BackColor = originalText.BackColor;
@@ -23,21 +22,24 @@ namespace SFSEd
             SetColors();
         }
 
-        public string ResultingText
+        #region Members
+
+        public string ResultingText => changedText.Text;
+
+        #endregion Members
+
+        private void changedText_TextChanged(object sender, EventArgs e)
         {
-            get { return this.changedText.Text; }
+            SetColors();
         }
 
         private void SetColors()
         {
-            bool different = changedText.Text != currentText.Text;
+            var different = changedText.Text != currentText.Text;
             btnOK.Enabled = different;
             currentText.ForeColor = different ? Color.Red : DefaultForeColor;
-            originalText.ForeColor = changedText.Text != originalText.Text ? Color.Red : (different ? Color.Blue : DefaultForeColor); 
-        }
-        private void changedText_TextChanged(object sender, EventArgs e)
-        {
-            SetColors();
+            originalText.ForeColor = changedText.Text != originalText.Text ? Color.Red :
+                different ? Color.Blue : DefaultForeColor;
         }
     }
 }

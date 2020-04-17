@@ -3,7 +3,6 @@ using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Threading.Tasks;
-using System.Timers;
 using System.Windows.Forms;
 
 namespace SFSEd
