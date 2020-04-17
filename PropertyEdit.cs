@@ -1,27 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SFSEd
 {
-    public partial class ValueEdit : Form
+    public partial class PropertyEdit : Form
     {
-        SFSLeaf ValueEntry;
+        Property ValueEntry;
 
-        public ValueEdit(SFSLeaf valueEntry)
+        public PropertyEdit(Property valueEntry)
         {
             InitializeComponent();
             ValueEntry = valueEntry;
-            Text = $"Edit {valueEntry.Key}";
-            originalText.Text = valueEntry.Original;
-            currentText.Text = valueEntry.Value;
-            changedText.Text = valueEntry.Value;
+            Text = $"Edit {valueEntry.key}";
+            originalText.Text = valueEntry.value;
+            currentText.Text = valueEntry.newValue;
+            changedText.Text = valueEntry.newValue;
+            // you don't appear to be able to change the foreground color of read-only
+            // input boxes unless you first change the background color, which is fun.
             currentText.BackColor = originalText.BackColor;
             originalText.BackColor = currentText.BackColor;
             SetColors();

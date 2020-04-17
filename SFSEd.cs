@@ -1,72 +1,106 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Diagnostics.Contracts;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows.Forms;
 
 namespace SFSEd
 {
     public partial class SFSEd : Form
     {
+        #region Members
+        public string currentFilename { get; private set; } = null;
+        public string currentBasename { get; private set; } = null;
+        protected SaveFile currentSave { get; private set; } = null;
+        protected System.Timers.Timer statusTimer;
+        #endregion
+
+        private void SFSEd_Load(object sender, EventArgs e)
+        {
+            domainsView.Nodes.Add("Open a Save Game file...");
+        }
+
         public SFSEd()
         {
             InitializeComponent();
         }
 
-        public string CurrentFilename { get; private set; }
-        public string CurrentBasename { get; private set; }
-
-        protected SFSTree currentTree { get; private set; }
-
-        private void SFSEd_Load(object sender, EventArgs e)
+        public void SetStatus(string status)
         {
-            containerView.Nodes.Add("Open a Save Game file...");
+            statusTimer = null;
+            statusLabel.Text = status;
         }
 
-        private void ResetTrees()
+        /// <summary>
+        /// SetTransitionalStatus sets a status label immediately but then overwrites it after a number of
+        /// seconds has elapsed. This allows for distinguishing between "I just saved a file" and
+        /// "the file was saved as X but that was a while ago"...
+        /// </summary>
+        /// <param name="action">Action to prefix text with.</param>
+        /// <param name="information">Information about the action.</param>
+        /// <param name="duration">Seconds after which tor emove the 'action term</param>
+        public void SetActionStatus(string action, string information, double duration)
         {
-            valueView.Items.Clear();
-            valueView.View = View.List;
-            containerView.Nodes.Clear();
+            SetStatus(action + ": " + information);
+            statusTimer = new System.Timers.Timer(duration * 1000.0) { AutoReset = false, Enabled = true };
+            statusTimer.Elapsed += (sender, e) => statusLabel.Text = information;
+        }
+
+        public void ClearProperties()
+        {
+            propertiesView.Items.Clear();
+            propertiesView.View = View.List;
+        }
+
+        public void ClearDomainsAndProperties()
+        {
+            ClearProperties();
+            domainsView.Nodes.Clear();
         }
 
         private async void LoadFile(string filename)
         {
-            // Clear out values and set the mode to list mode to hide the headers.
-            valueView.Items.Clear();
-            valueView.View = View.List;
-            // Clear out containers.
-            containerView.Nodes.Clear();
-            containerView.Nodes.Add("Loading...");
 
-            currentTree = await Task.Run(() => SFSTree.ReadFromFile(filename)).ConfigureAwait(true);
-            currentTree.AddContainers(containerView.Nodes);
-            statusLabel.Text = $"Loaded: {filename}; {currentTree.TotalContainers} nodes, {currentTree.TotalValues} values.";
+            ClearDomainsAndProperties();
+            domainsView.Nodes.Add("Loading...");
+            SetStatus("Loading...");
 
-            containerView.BeginUpdate();
-            containerView.Nodes.RemoveAt(0);
-            containerView.TopNode.Expand();
-            containerView.SelectedNode = containerView.TopNode;
-            containerView.EndUpdate();
+            currentSave = await Task.Run(() => SaveFile.Load(filename)).ConfigureAwait(true);
+            currentSave.ListDomains(domainsView.Nodes);
+            SetActionStatus("Loaded", filename, 3);
+            domainsCountLabel.Text = currentSave.numDomains.ToString();
+            propertiesCountLabel.Text = currentSave.numProperties.ToString();
+
+            domainsView.BeginUpdate();
+            domainsView.Nodes.RemoveAt(0);
+            domainsView.TopNode.Expand();
+            domainsView.SelectedNode = domainsView.TopNode;
+            domainsView.EndUpdate();
+        }
+
+        private void containerView_DoubleClick(object sender, EventArgs e)
+        {
+            // On load, we display a single node telling the user to open a file.
+            // People will likely try to click/double click on this before going
+            // to the menu system, so in the case where we receive a double-click
+            // and no file is open, jump to the open file function.
+            if (currentFilename is null)
+            {
+                openDialog.ShowDialog();
+                return;
+            }
         }
 
         private void ContainerView_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            valueView.Items.Clear();
-            var sfsNode = (SFSNode)e.Node.Tag;
-            if (sfsNode != null)
-                sfsNode.AddValues(valueView);
+            ((Domain)e.Node.Tag)?.ListProperties(propertiesView);
         }
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            OpenSFSDialog.ShowDialog();
+            openDialog.ShowDialog();
         }
 
         private void openFileDialog1_FileOk(object sender, CancelEventArgs e)
@@ -76,16 +110,29 @@ namespace SFSEd
 
             var dialog = (OpenFileDialog)sender;
             LoadFile(dialog.FileName);
-            CurrentFilename = dialog.FileName;
-            CurrentBasename = dialog.SafeFileName;
+            currentFilename = dialog.FileName;
+            currentBasename = dialog.SafeFileName;
             saveToolStripMenuItem.Enabled = true;
             saveAsToolStripMenuItem.Enabled = true;
         }
 
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SaveSFSDialog.FileName = CurrentBasename;
-            SaveSFSDialog.ShowDialog();
+            saveDialog.FileName = currentBasename;
+            saveDialog.ShowDialog();
+        }
+
+        private async Task save(string doing, string done, string filename)
+        {
+            SetStatus($"{doing}: {filename}");
+
+            await currentSave.Save(filename).ConfigureAwait(true);
+
+            SetActionStatus(done, filename, 3);
+
+            // If a property set is being displayed, refresh it.
+            ClearProperties();
+            ((Domain)domainsView.SelectedNode.Tag)?.ListProperties(propertiesView);
         }
 
         private async void SaveSFSDialog_FileOk(object sender, CancelEventArgs e)
@@ -94,25 +141,21 @@ namespace SFSEd
                 return;
 
             var dialog = (SaveFileDialog)sender;
-            statusLabel.Text = $"Saving to: {dialog.FileName}";
 
-            await currentTree.WriteToFile(dialog.FileName).ConfigureAwait(true);
+            await save("Saving to", "Saved", dialog.FileName).ConfigureAwait(true);
 
-            CurrentFilename = dialog.FileName;
-            CurrentBasename = Path.GetFileName(dialog.FileName);
-
-            statusLabel.Text = $"Saved: {dialog.FileName}";
+            currentFilename = dialog.FileName;
+            currentBasename = Path.GetFileName(dialog.FileName);
         }
 
         private async void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            statusLabel.Text = $"Rewriting: {CurrentFilename}";
-            await Task.Run(() => currentTree.WriteToFile(CurrentFilename)).ConfigureAwait(true);
-            statusLabel.Text = $"Wrote: {CurrentFilename}";
+            await save("Rewriting", "Wrote", currentFilename);
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            ClearDomainsAndProperties();
             this.Close();
         }
 
@@ -126,14 +169,15 @@ namespace SFSEd
         {
             var list = (ListView)sender;
             Contract.Assert(list.SelectedItems.Count == 1);
-            var entry = (SFSLeaf)list.SelectedItems[0].Tag;
+            var entry = (Property)list.SelectedItems[0].Tag;
 
-            var editDlg = new ValueEdit(entry);
+            var editDlg = new PropertyEdit(entry);
             var result = editDlg.ShowDialog();
             if (result == DialogResult.OK)
             {
-                entry.Value = editDlg.ResultingText;
-                list.SelectedItems[0].SubItems[1].Text = entry.Value;
+                entry.newValue = editDlg.ResultingText;
+                entry.Render(list.SelectedItems[0]);
+                list.SelectedItems[0].SubItems[1].Text = entry.newValue;
             }
         }
     }

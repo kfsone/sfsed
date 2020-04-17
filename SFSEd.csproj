@@ -52,11 +52,12 @@
     <Compile Include="About.Designer.cs">
       <DependentUpon>About.cs</DependentUpon>
     </Compile>
-    <Compile Include="ValueEdit.cs">
+    <Compile Include="OrderingEntry.cs" />
+    <Compile Include="PropertyEdit.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ValueEdit.Designer.cs">
-      <DependentUpon>ValueEdit.cs</DependentUpon>
+    <Compile Include="PropertyEdit.Designer.cs">
+      <DependentUpon>PropertyEdit.cs</DependentUpon>
     </Compile>
     <Compile Include="SFSEd.cs">
       <SubType>Form</SubType>
@@ -66,11 +67,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SFSLeaf.cs" />
-    <Compile Include="SFSNode.cs" />
-    <Compile Include="SFSTree.cs" />
+    <Compile Include="Property.cs" />
+    <Compile Include="Domain.cs" />
+    <Compile Include="SaveFile.cs" />
     <EmbeddedResource Include="About.resx">
       <DependentUpon>About.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -84,9 +86,10 @@
     </Compile>
     <EmbeddedResource Include="SFSEd.resx">
       <DependentUpon>SFSEd.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="ValueEdit.resx">
-      <DependentUpon>ValueEdit.cs</DependentUpon>
+    <EmbeddedResource Include="PropertyEdit.resx">
+      <DependentUpon>PropertyEdit.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

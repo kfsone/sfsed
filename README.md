@@ -3,6 +3,16 @@ Copyright (C) Oliver 'kfsone' Smith, April 2020
 
 Small tool for viewing/editing the '.sfs' files Kerbal Space Program uses to save games.
 
+Version 0.3: Apr 17 2020
+- UI improvements,
+ - Show changes in red,
+ - Improved status bar,
+ - Don't leave "Loaded" or "Saved" in the status bar for a long time (was confusing)
+- Minor memory/cpu performance improvements,
+- General code cleanup,
+- Terminology changes (Property for key/value pairs, Domain for collections)
+TODO: Track changes up the treeview hierarchy too
+
 Version 0.2: Apr 15 2020
 - Added minimal, basic editing support,
 

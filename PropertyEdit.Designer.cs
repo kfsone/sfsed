@@ -1,6 +1,6 @@
 ﻿namespace SFSEd
 {
-    partial class ValueEdit
+    partial class PropertyEdit
     {
         /// <summary>
         /// Required designer variable.
@@ -13,10 +13,8 @@
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null))
-            {
-                components.Dispose();
-            }
+            if (disposing)
+                components?.Dispose();
             base.Dispose(disposing);
         }
 
@@ -46,7 +44,8 @@
             this.originalText.Name = "originalText";
             this.originalText.ReadOnly = true;
             this.originalText.Size = new System.Drawing.Size(341, 20);
-            this.originalText.TabIndex = 2;
+            this.originalText.TabIndex = 0;
+            this.originalText.TabStop = false;
             // 
             // label1
             // 
@@ -71,7 +70,7 @@
             this.changedText.Location = new System.Drawing.Point(59, 58);
             this.changedText.Name = "changedText";
             this.changedText.Size = new System.Drawing.Size(341, 20);
-            this.changedText.TabIndex = 4;
+            this.changedText.TabIndex = 1;
             this.changedText.TextChanged += new System.EventHandler(this.changedText_TextChanged);
             // 
             // btnCancel
@@ -110,7 +109,8 @@
             this.currentText.Name = "currentText";
             this.currentText.ReadOnly = true;
             this.currentText.Size = new System.Drawing.Size(341, 20);
-            this.currentText.TabIndex = 8;
+            this.currentText.TabIndex = 0;
+            this.currentText.TabStop = false;
             // 
             // panel1
             // 
@@ -130,7 +130,7 @@
             this.panel1.Size = new System.Drawing.Size(423, 121);
             this.panel1.TabIndex = 9;
             // 
-            // ValueEdit
+            // PropertyEdit
             // 
             this.AcceptButton = this.btnOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -140,7 +140,7 @@
             this.ControlBox = false;
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-            this.Name = "ValueEdit";
+            this.Name = "PropertyEdit";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Edit Field";
             this.panel1.ResumeLayout(false);
