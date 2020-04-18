@@ -30,8 +30,8 @@ namespace SFSEd
             var fullName = name;
             if (itemNo >= 0)
                 fullName += $" #{itemNo}";
-            foreach (var child in properties.Where(child => child.key == "name" && child.value.Length > 0))
-                return fullName + ": " + child.value;
+            foreach (var child in properties.Where(child => child.key == "name" && child.pending.Length > 0))
+                return fullName + ": " + child.pending;
             return fullName;
         }
 
@@ -50,9 +50,9 @@ namespace SFSEd
                 {
                     text += entry.subDomain.AsText(saving, innerIndent);
                 }
-                else if (entry.property.value != null)
+                else
                 {
-                    text += $"{innerIndent}{entry.property.key} = {entry.property.value}\n";
+                    text += $"{innerIndent}{entry.property.key} = {entry.property.pending}\n";
                     if (saving && entry.property.isChanged)
                         entry.property.Synchronize();
                 }
@@ -74,7 +74,7 @@ namespace SFSEd
             listView.BeginUpdate();
             foreach (var property in properties)
             {
-                var value = new ListViewItem(new[] {property.key, property.value})
+                var value = new ListViewItem(new[] { property.key, property.pending })
                 {
                     Tag = property,
                     ForeColor = property.isChanged ? Color.Red : Control.DefaultForeColor

@@ -121,11 +121,11 @@ namespace SFSEd
             saveDialog.ShowDialog();
         }
 
-        private async Task save(string doing, string done, string filename)
+        private void save(string doing, string done, string filename)
         {
             SetStatus($"{doing}: {filename}");
 
-            await currentSave.Save(filename).ConfigureAwait(true);
+            currentSave.Save(filename);
 
             SetActionStatus(done, filename, 3);
 
@@ -134,22 +134,22 @@ namespace SFSEd
             ((Domain)domainsView.SelectedNode.Tag)?.ListProperties(propertiesView);
         }
 
-        private async void SaveSFSDialog_FileOk(object sender, CancelEventArgs e)
+        private void SaveSFSDialog_FileOk(object sender, CancelEventArgs e)
         {
             if (e.Cancel)
                 return;
 
             var dialog = (SaveFileDialog)sender;
 
-            await save("Saving to", "Saved", dialog.FileName).ConfigureAwait(true);
+            save("Saving to", "Saved", dialog.FileName);
 
             currentFilename = dialog.FileName;
             currentBasename = Path.GetFileName(dialog.FileName);
         }
 
-        private async void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            await save("Rewriting", "Wrote", currentFilename);
+            save("Rewriting", "Wrote", currentFilename);
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -167,16 +167,18 @@ namespace SFSEd
         private void valueView_DoubleClick(object sender, EventArgs e)
         {
             var list = (ListView)sender;
+            if (list.SelectedItems.Count == 0)
+                return;
             Contract.Assert(list.SelectedItems.Count == 1);
-            var entry = (Property)list.SelectedItems[0].Tag;
+            var selected = list.SelectedItems[0];
+            var entry = (Property)selected.Tag;
 
             var editDlg = new PropertyEdit(entry);
-            var result = editDlg.ShowDialog();
-            if (result == DialogResult.OK)
+            if (editDlg.ShowDialog() == DialogResult.OK)
             {
-                entry.newValue = editDlg.ResultingText;
+                entry.pending = editDlg.ResultingText;
                 entry.Render(list.SelectedItems[0]);
-                list.SelectedItems[0].SubItems[1].Text = entry.newValue;
+                list.SelectedItems[0].SubItems[1].Text = entry.pending;
             }
         }
     }

@@ -13,31 +13,39 @@ namespace SFSEd
         public Property(string key, string value)
         {
             this.key = key;
-            this.value = value;
-            this._newValue = null;
+            this.source = value;
+            this._current = null;
+            this._pending = null;
         }
 
         public void Render(ListViewItem into)
         {
-            into.SubItems[1].Text = newValue;
-            into.ForeColor = isChanged ? Color.Red : Form.DefaultForeColor;
+            into.SubItems[1].Text = pending;
+            into.ForeColor = pending != current ? Color.DarkRed : Form.DefaultForeColor;
         }
 
         public void Synchronize()
         {
-            if (_newValue != null)
-                (value, _newValue) = (_newValue, null);
+            if (_pending != null)
+            {
+                _current = (_pending != source) ? _pending : null;
+                _pending = null;
+            }
         }
 
         #region Members
         //! key is the label or name of this field.
         public string key { get; }
+        //! value we saw on load.
+        public string source { get; }
+        //! Last value we saved, or null if unchanged
+        private string _current = null;
+        public string current { get => _current ?? source; }
+        //! Value we need to write to disk or null
+        private string _pending = null;
+        public string pending { get => _pending ?? current; set => _pending = (value != current) ? value : null; }
         //! value we originally loaded from disk
-        public string value { get; private set; }
-        //! null or new value specified by user
-        private string _newValue = null;
-        public string newValue { get => _newValue ?? this.value; set => this._newValue = this.value == value ? null : value; }
-        public bool isChanged => _newValue != null;
+        public bool isChanged => _pending != null;
         #endregion
     };
 }

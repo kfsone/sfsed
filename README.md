@@ -4,6 +4,7 @@ Copyright (C) Oliver 'kfsone' Smith, April 2020
 Small tool for viewing/editing the '.sfs' files Kerbal Space Program uses to save games.
 
 Version 0.3: Apr 17 2020
+- Converted to .net core for portability,
 - UI improvements,
  - Show changes in red,
  - Improved status bar,
@@ -21,4 +22,3 @@ Version 0.1: Apr 15 2020
 - If a save would overwrite an existing file, is backed up as <original name>.saved
 	e.g. foo.sfs => foo.sfs.saved
 		 foo.sfs.saved => foo.sfs.saved.saved
-

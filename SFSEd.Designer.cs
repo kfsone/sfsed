@@ -39,17 +39,17 @@
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.domainsLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.domainsCountLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.propertiesCountLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.splitContainer = new System.Windows.Forms.SplitContainer();
             this.domainsView = new System.Windows.Forms.TreeView();
             this.propertiesView = new System.Windows.Forms.ListView();
-            this.keyColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.valueColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.keyColumnHeader = new System.Windows.Forms.ColumnHeader();
+            this.valueColumnHeader = new System.Windows.Forms.ColumnHeader();
             this.openDialog = new System.Windows.Forms.OpenFileDialog();
             this.saveDialog = new System.Windows.Forms.SaveFileDialog();
-            this.domainsLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.propertiesCountLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.domainsCountLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip1.SuspendLayout();
             this.statusStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
@@ -65,7 +65,8 @@
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(800, 24);
+            this.menuStrip1.Padding = new System.Windows.Forms.Padding(7, 2, 0, 2);
+            this.menuStrip1.Size = new System.Drawing.Size(933, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -151,9 +152,10 @@
             this.domainsCountLabel,
             this.toolStripStatusLabel2,
             this.propertiesCountLabel});
-            this.statusStrip.Location = new System.Drawing.Point(0, 426);
+            this.statusStrip.Location = new System.Drawing.Point(0, 495);
             this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(800, 24);
+            this.statusStrip.Padding = new System.Windows.Forms.Padding(1, 0, 16, 0);
+            this.statusStrip.Size = new System.Drawing.Size(933, 24);
             this.statusStrip.TabIndex = 1;
             this.statusStrip.Text = "statusStrip";
             // 
@@ -164,15 +166,58 @@
             | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
             this.statusLabel.BorderStyle = System.Windows.Forms.Border3DStyle.Etched;
             this.statusLabel.Name = "statusLabel";
-            this.statusLabel.Size = new System.Drawing.Size(592, 19);
+            this.statusLabel.Size = new System.Drawing.Size(754, 19);
             this.statusLabel.Spring = true;
             this.statusLabel.Text = "SFSEd";
             this.statusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // domainsLabel
+            // 
+            this.domainsLabel.AutoSize = false;
+            this.domainsLabel.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)(((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.domainsLabel.BorderStyle = System.Windows.Forms.Border3DStyle.Etched;
+            this.domainsLabel.MergeIndex = 1;
+            this.domainsLabel.Name = "domainsLabel";
+            this.domainsLabel.Size = new System.Drawing.Size(61, 19);
+            this.domainsLabel.Text = "Domains:";
+            // 
+            // domainsCountLabel
+            // 
+            this.domainsCountLabel.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)(((System.Windows.Forms.ToolStripStatusLabelBorderSides.Top | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.domainsCountLabel.BorderStyle = System.Windows.Forms.Border3DStyle.Etched;
+            this.domainsCountLabel.MergeIndex = 1;
+            this.domainsCountLabel.Name = "domainsCountLabel";
+            this.domainsCountLabel.Size = new System.Drawing.Size(17, 19);
+            this.domainsCountLabel.Text = "0";
+            // 
+            // toolStripStatusLabel2
+            // 
+            this.toolStripStatusLabel2.AutoSize = false;
+            this.toolStripStatusLabel2.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)(((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.toolStripStatusLabel2.BorderStyle = System.Windows.Forms.Border3DStyle.Etched;
+            this.toolStripStatusLabel2.MergeIndex = 2;
+            this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
+            this.toolStripStatusLabel2.Size = new System.Drawing.Size(67, 19);
+            this.toolStripStatusLabel2.Text = "Properties:";
+            // 
+            // propertiesCountLabel
+            // 
+            this.propertiesCountLabel.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)(((System.Windows.Forms.ToolStripStatusLabelBorderSides.Top | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.propertiesCountLabel.BorderStyle = System.Windows.Forms.Border3DStyle.Etched;
+            this.propertiesCountLabel.MergeIndex = 2;
+            this.propertiesCountLabel.Name = "propertiesCountLabel";
+            this.propertiesCountLabel.Size = new System.Drawing.Size(17, 19);
+            this.propertiesCountLabel.Text = "0";
             // 
             // splitContainer
             // 
             this.splitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer.Location = new System.Drawing.Point(0, 24);
+            this.splitContainer.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.splitContainer.Name = "splitContainer";
             // 
             // splitContainer.Panel1
@@ -182,16 +227,18 @@
             // splitContainer.Panel2
             // 
             this.splitContainer.Panel2.Controls.Add(this.propertiesView);
-            this.splitContainer.Size = new System.Drawing.Size(800, 402);
-            this.splitContainer.SplitterDistance = 266;
+            this.splitContainer.Size = new System.Drawing.Size(933, 471);
+            this.splitContainer.SplitterDistance = 310;
+            this.splitContainer.SplitterWidth = 5;
             this.splitContainer.TabIndex = 2;
             // 
             // domainsView
             // 
             this.domainsView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.domainsView.Location = new System.Drawing.Point(0, 0);
+            this.domainsView.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.domainsView.Name = "domainsView";
-            this.domainsView.Size = new System.Drawing.Size(266, 402);
+            this.domainsView.Size = new System.Drawing.Size(310, 471);
             this.domainsView.TabIndex = 0;
             this.domainsView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.ContainerView_AfterSelect);
             this.domainsView.DoubleClick += new System.EventHandler(this.containerView_DoubleClick);
@@ -205,10 +252,11 @@
             this.propertiesView.FullRowSelect = true;
             this.propertiesView.HideSelection = false;
             this.propertiesView.Location = new System.Drawing.Point(0, 0);
+            this.propertiesView.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.propertiesView.MultiSelect = false;
             this.propertiesView.Name = "propertiesView";
             this.propertiesView.ShowGroups = false;
-            this.propertiesView.Size = new System.Drawing.Size(530, 402);
+            this.propertiesView.Size = new System.Drawing.Size(618, 471);
             this.propertiesView.TabIndex = 0;
             this.propertiesView.UseCompatibleStateImageBehavior = false;
             this.propertiesView.View = System.Windows.Forms.View.Details;
@@ -237,57 +285,17 @@
             this.saveDialog.Filter = "SFS files|*.sfs|All files|*.*";
             this.saveDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.SaveSFSDialog_FileOk);
             // 
-            // domainsLabel
-            // 
-            this.domainsLabel.AutoSize = false;
-            this.domainsLabel.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)(((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
-            this.domainsLabel.BorderStyle = System.Windows.Forms.Border3DStyle.Etched;
-            this.domainsLabel.MergeIndex = 1;
-            this.domainsLabel.Name = "domainsLabel";
-            this.domainsLabel.Size = new System.Drawing.Size(61, 19);
-            this.domainsLabel.Text = "Domains:";
-            // 
-            // propertiesCountLabel
-            // 
-            this.propertiesCountLabel.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)(((System.Windows.Forms.ToolStripStatusLabelBorderSides.Top | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
-            this.propertiesCountLabel.BorderStyle = System.Windows.Forms.Border3DStyle.Etched;
-            this.propertiesCountLabel.MergeIndex = 2;
-            this.propertiesCountLabel.Name = "propertiesCountLabel";
-            this.propertiesCountLabel.Size = new System.Drawing.Size(17, 19);
-            this.propertiesCountLabel.Text = "0";
-            // 
-            // domainsCountLabel
-            // 
-            this.domainsCountLabel.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)(((System.Windows.Forms.ToolStripStatusLabelBorderSides.Top | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
-            this.domainsCountLabel.BorderStyle = System.Windows.Forms.Border3DStyle.Etched;
-            this.domainsCountLabel.MergeIndex = 1;
-            this.domainsCountLabel.Name = "domainsCountLabel";
-            this.domainsCountLabel.Size = new System.Drawing.Size(17, 19);
-            this.domainsCountLabel.Text = "0";
-            // 
-            // toolStripStatusLabel2
-            // 
-            this.toolStripStatusLabel2.AutoSize = false;
-            this.toolStripStatusLabel2.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)(((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
-            this.toolStripStatusLabel2.BorderStyle = System.Windows.Forms.Border3DStyle.Etched;
-            this.toolStripStatusLabel2.MergeIndex = 2;
-            this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
-            this.toolStripStatusLabel2.Size = new System.Drawing.Size(67, 19);
-            this.toolStripStatusLabel2.Text = "Properties:";
-            // 
             // SFSEd
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(933, 519);
             this.Controls.Add(this.splitContainer);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.menuStrip1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
+            this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.Name = "SFSEd";
             this.Text = "SFSEd";
             this.Load += new System.EventHandler(this.SFSEd_Load);

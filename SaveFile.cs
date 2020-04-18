@@ -120,7 +120,7 @@ namespace SFSEd
             return domains[0].AsText(saving);
         }
 
-        public async Task Save(string filename)
+        public void Save(string filename)
         {
             if (File.Exists(filename))
             {
@@ -131,8 +131,8 @@ namespace SFSEd
                 }
                 File.Move(filename, backup);
             }
-            var text = await Task.Run(() => this.AsText(saving: true)).ConfigureAwait(true);
-            await Task.Run(() => File.WriteAllText(filename, text));
+            var text = this.AsText(saving: true);
+            File.WriteAllText(filename, text);
         }
 
     };
