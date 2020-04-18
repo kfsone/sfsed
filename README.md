@@ -3,6 +3,11 @@ Copyright (C) Oliver 'kfsone' Smith, April 2020
 
 Small tool for viewing/editing the '.sfs' files Kerbal Space Program uses to save games.
 
+![.NET Core](https://github.com/kfsone/sfsed/workflows/.NET%20Core/badge.svg)
+
+Version 0.4: Apr 17 2020
+- Configured dotnet workflow for github.
+
 Version 0.3: Apr 17 2020
 - Converted to .net core for portability,
 - UI improvements,
