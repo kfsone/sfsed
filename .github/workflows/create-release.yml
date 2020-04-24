@@ -2,9 +2,9 @@
 # build a zip file with the content.
 
 on:
-    push:
-        tags:
-            - 'v[0-9][0-9]*\.[0-9][0-9]*\.[0-9].*'
+  push:
+    tags:
+      - 'v[0-9]+.*'
 
 name: Build release zip
 
