@@ -1,4 +1,3 @@
-  
 # When a new tag is created matching the pattern 'vN+.N+.N+',
 # build a zip file with the content.
 
@@ -19,13 +18,24 @@ jobs:
             - name: Checkout the code
               uses: actions/checkout@v2
 
+            - name: Setup .NET Core
+              uses: actions/setup-dotnet@v1
+              with:
+                dotnet-version: 3.1.101
+
+            - name: Install dependencies
+              run: dotnet restore
+
             - name: Build the binaries
-              run: dotnet publish -p:PublishProfile=Properties/PubProfile.pubxml
+              run: |
+                  dotnet publish `
+                    -p:PublishProfile=Properties/PublishProfiles/FolderProfile.pubxml `
+                    --configuration=Release
 
             - name: Create release.zip
               id: release
               shell: pwsh
-              working-directory: Release
+              working-directory: Publish
               run: |
                   Compress-Archive -Path * -DestinationPath ../release.zip
                   $fields = "${{ github.ref }}" -Split '/'
