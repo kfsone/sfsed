@@ -1,5 +1,7 @@
 # SFSEd: Kerbal Space Program save-game editor
-Copyright (C) Oliver 'kfsone' Smith, April 2020
+Copyright (C) Oliver 'kfsone' Smith, April 2020-2021
+
+https://github.com/kfsone/sfsed/actions/workflows/create-release/badge.svg
 
 Small tool for viewing/editing the '.sfs' files Kerbal Space Program uses to save games.
 
