@@ -24,14 +24,16 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <PlatformTarget>AnyCPU</PlatformTarget>
     <NoWarn />
+    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <NoWarn />
+    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="Properties\sfsed-icon.png" Pack="true" PackagePath=""/>
+    <Content Include="Properties\sfsed-icon.png" Pack="true" PackagePath="" />
     <None Include="LICENSE" Pack="true" PackagePath="" />
   </ItemGroup>
 
