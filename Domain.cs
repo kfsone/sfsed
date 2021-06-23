@@ -15,10 +15,10 @@ namespace SFSEd
         public Domain(string named)
         {
             Contract.Requires(named != null);
-            name = named;
-            domains = new List<Domain>();
-            properties = new List<Property>();
-            loadOrder = new List<OrderingEntry>();
+            Name = named;
+            Domains = new List<Domain>();
+            Properties = new List<Property>();
+            LoadOrder = new List<OrderingEntry>();
         }
 
         /// <summary>
@@ -27,11 +27,11 @@ namespace SFSEd
         /// <returns></returns>
         public string GetFullName()
         {
-            var fullName = name;
-            if (itemNo >= 0)
-                fullName += $" #{itemNo}";
-            foreach (var child in properties.Where(child => child.key == "name" && child.pending.Length > 0))
-                return fullName + ": " + child.pending;
+            var fullName = Name;
+            if (ItemNo >= 0)
+                fullName += $" #{ItemNo}";
+            foreach (var child in Properties.Where(child => child.Key == "name" && child.Pending.Length > 0))
+                return fullName + ": " + child.Pending;
             return fullName;
         }
 
@@ -43,18 +43,18 @@ namespace SFSEd
         /// <returns>Text representation of this domain and its children.</returns>
         public string AsText(bool saving, string indentation = "")
         {
-            var text = $"{indentation}{name}\n{indentation}{{\n";
+            var text = $"{indentation}{Name}\n{indentation}{{\n";
             var innerIndent = indentation + "\t";
-            foreach (var entry in loadOrder)
-                if (entry.subDomain != null)
+            foreach (var entry in LoadOrder)
+                if (entry.SubDomain != null)
                 {
-                    text += entry.subDomain.AsText(saving, innerIndent);
+                    text += entry.SubDomain.AsText(saving, innerIndent);
                 }
                 else
                 {
-                    text += $"{innerIndent}{entry.property.key} = {entry.property.pending}\n";
-                    if (saving && entry.property.isChanged)
-                        entry.property.Synchronize();
+                    text += $"{innerIndent}{entry.Property.Key} = {entry.Property.Pending}\n";
+                    if (saving && entry.Property.IsChanged)
+                        entry.Property.Synchronize();
                 }
 
             text += indentation + "}\n";
@@ -72,12 +72,12 @@ namespace SFSEd
             listView.View = View.List;
 
             listView.BeginUpdate();
-            foreach (var property in properties)
+            foreach (var property in Properties)
             {
-                var value = new ListViewItem(new[] { property.key, property.pending })
+                var value = new ListViewItem(new[] { property.Key, property.Pending })
                 {
                     Tag = property,
-                    ForeColor = property.isChanged ? Color.Red : Control.DefaultForeColor
+                    ForeColor = property.IsChanged ? Color.Red : Control.DefaultForeColor
                 };
                 listView.Items.Add(value);
             }
@@ -95,31 +95,31 @@ namespace SFSEd
         public void ListDomains(TreeNodeCollection insertAt)
         {
             Contract.Requires(insertAt != null);
-            var treeNodes = new TreeNode[domains.Count];
-            for (var i = 0; i < domains.Count; ++i)
-                treeNodes[i] = new TreeNode(domains[i].GetFullName())
+            var treeNodes = new TreeNode[Domains.Count];
+            for (var i = 0; i < Domains.Count; ++i)
+                treeNodes[i] = new TreeNode(Domains[i].GetFullName())
                 {
-                    Name = domains[i].name,
-                    Tag = domains[i]
+                    Name = Domains[i].Name,
+                    Tag = Domains[i]
                 };
 
             insertAt.AddRange(treeNodes);
 
-            for (var i = 0; i < domains.Count; ++i) domains[i].ListDomains(treeNodes[i].Nodes);
+            for (var i = 0; i < Domains.Count; ++i) Domains[i].ListDomains(treeNodes[i].Nodes);
         }
 
         #region Members
 
-        public string name { get; }
-        public List<Domain> domains { get; }
-        public List<Property> properties { get; }
-        public List<OrderingEntry> loadOrder { get; }
+        public string Name { get; }
+        public List<Domain> Domains { get; }
+        public List<Property> Properties { get; }
+        public List<OrderingEntry> LoadOrder { get; }
 
         /// <summary>
         ///     itemNo is used by for some Domains that repeat multiple times in a parent,
         ///     as PART is repeated multiple times within VESSEL.
         /// </summary>
-        public int itemNo { get; set; } = -1;
+        public int ItemNo { get; set; } = -1;
 
         #endregion Members
     }
