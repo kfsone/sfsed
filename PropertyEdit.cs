@@ -1,6 +1,4 @@
-﻿using System;
-using System.Drawing;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 
 namespace SFSEd
 {
@@ -10,11 +8,11 @@ namespace SFSEd
         {
             InitializeComponent();
 
-            Text = $"Edit {property.key}";
-            originalText.Text = property.source;
-            currentText.Text = property.current;
-            changedText.Text = property.pending;
-            changedText.Tag = property.pending;
+            Text = $"Edit {property.Key}";
+            originalText.Text = property.Source;
+            currentText.Text = property.Current;
+            changedText.Text = property.Pending;
+            changedText.Tag = property.Pending;
         }
 
         #region Members

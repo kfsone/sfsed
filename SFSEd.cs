@@ -10,9 +10,9 @@ namespace SFSEd
     public partial class SFSEd : Form
     {
         #region Members
-        public string currentFilename { get; private set; } = null;
-        public string currentBasename { get; private set; } = null;
-        protected SaveFile currentSave { get; private set; } = null;
+        public string CurrentFilename { get; private set; } = null;
+        public string CurrentBasename { get; private set; } = null;
+        protected SaveFile CurrentSave { get; private set; } = null;
         protected System.Timers.Timer statusTimer;
         #endregion
 
@@ -66,11 +66,11 @@ namespace SFSEd
             domainsView.Nodes.Add("Loading...");
             SetStatus("Loading...");
 
-            currentSave = await Task.Run(() => SaveFile.Load(filename)).ConfigureAwait(true);
-            currentSave.ListDomains(domainsView.Nodes);
+            CurrentSave = await Task.Run(() => SaveFile.Load(filename)).ConfigureAwait(true);
+            CurrentSave.ListDomains(domainsView.Nodes);
             SetActionStatus("Loaded", filename, 3);
-            domainsCountLabel.Text = currentSave.numDomains.ToString();
-            propertiesCountLabel.Text = currentSave.numProperties.ToString();
+            domainsCountLabel.Text = CurrentSave.NumDomains.ToString();
+            propertiesCountLabel.Text = CurrentSave.NumProperties.ToString();
 
             domainsView.BeginUpdate();
             domainsView.Nodes.RemoveAt(0);
@@ -79,13 +79,13 @@ namespace SFSEd
             domainsView.EndUpdate();
         }
 
-        private void containerView_DoubleClick(object sender, EventArgs e)
+        private void ContainerView_DoubleClick(object sender, EventArgs e)
         {
             // On load, we display a single node telling the user to open a file.
             // People will likely try to click/double click on this before going
             // to the menu system, so in the case where we receive a double-click
             // and no file is open, jump to the open file function.
-            if (currentFilename is null)
+            if (CurrentFilename is null)
             {
                 openDialog.ShowDialog();
                 return;
@@ -97,35 +97,35 @@ namespace SFSEd
             ((Domain)e.Node.Tag)?.ListProperties(propertiesView);
         }
 
-        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        private void OpenToolStripMenuItem_Click(object sender, EventArgs e)
         {
             openDialog.ShowDialog();
         }
 
-        private void openFileDialog1_FileOk(object sender, CancelEventArgs e)
+        private void OpenFileDialog1_FileOk(object sender, CancelEventArgs e)
         {
             if (e.Cancel)
                 return;
 
             var dialog = (OpenFileDialog)sender;
             LoadFile(dialog.FileName);
-            currentFilename = dialog.FileName;
-            currentBasename = dialog.SafeFileName;
+            CurrentFilename = dialog.FileName;
+            CurrentBasename = dialog.SafeFileName;
             saveToolStripMenuItem.Enabled = true;
             saveAsToolStripMenuItem.Enabled = true;
         }
 
-        private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void SaveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            saveDialog.FileName = currentBasename;
+            saveDialog.FileName = CurrentBasename;
             saveDialog.ShowDialog();
         }
 
-        private void save(string doing, string done, string filename)
+        private void Save(string doing, string done, string filename)
         {
             SetStatus($"{doing}: {filename}");
 
-            currentSave.Save(filename);
+            CurrentSave.Save(filename);
 
             SetActionStatus(done, filename, 3);
 
@@ -141,30 +141,30 @@ namespace SFSEd
 
             var dialog = (SaveFileDialog)sender;
 
-            save("Saving to", "Saved", dialog.FileName);
+            Save("Saving to", "Saved", dialog.FileName);
 
-            currentFilename = dialog.FileName;
-            currentBasename = Path.GetFileName(dialog.FileName);
+            CurrentFilename = dialog.FileName;
+            CurrentBasename = Path.GetFileName(dialog.FileName);
         }
 
-        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        private void SaveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            save("Rewriting", "Wrote", currentFilename);
+            Save("Rewriting", "Wrote", CurrentFilename);
         }
 
-        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ClearDomainsAndProperties();
             this.Close();
         }
 
-        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        private void AboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var about = new About();
             about.ShowDialog();
         }
 
-        private void valueView_DoubleClick(object sender, EventArgs e)
+        private void ValueView_DoubleClick(object sender, EventArgs e)
         {
             var list = (ListView)sender;
             if (list.SelectedItems.Count == 0)
@@ -176,9 +176,9 @@ namespace SFSEd
             var editDlg = new PropertyEdit(entry);
             if (editDlg.ShowDialog() == DialogResult.OK)
             {
-                entry.pending = editDlg.ResultingText;
+                entry.Pending = editDlg.ResultingText;
                 entry.Render(list.SelectedItems[0]);
-                list.SelectedItems[0].SubItems[1].Text = entry.pending;
+                list.SelectedItems[0].SubItems[1].Text = entry.Pending;
             }
         }
     }

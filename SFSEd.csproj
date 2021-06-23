@@ -1,8 +1,8 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>net5.0-windows</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
     <ApplicationIcon>Properties\sfsed-icon.ico</ApplicationIcon>
     <Win32Resource></Win32Resource>
@@ -10,15 +10,32 @@
     <PackageProjectUrl>https://github.com/kfsone/sfsed</PackageProjectUrl>
     <Company>KingFisher Software</Company>
     <Authors>Oliver 'kfsone' Smith</Authors>
-    <Version>0.3.0</Version>
+    <Version>0.7.0</Version>
     <PackageIcon>sfsed-icon.png</PackageIcon>
     <RepositoryUrl>https://github.com/kfsone/sfsed</RepositoryUrl>
-    <NoWin32Manifest>true</NoWin32Manifest>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Description>A simple editor for Kerbal Space Program '.sfs' save-game files
+</Description>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <NeutralLanguage>en</NeutralLanguage>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <PlatformTarget>AnyCPU</PlatformTarget>
+    <NoWarn />
+    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
   </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <NoWarn />
+    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="Properties\sfsed-icon.png" Pack="true" PackagePath="" />
+    <None Include="LICENSE" Pack="true" PackagePath="" />
+  </ItemGroup>
 
   <ItemGroup>
     <Compile Remove="ssfed.win\**" />

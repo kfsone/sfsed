@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.IO;
-using System.Threading.Tasks;
 
 namespace SFSEd
 {
@@ -13,8 +12,8 @@ namespace SFSEd
     public class SaveFile : Domain
     {
         #region Members
-        public ulong numDomains { get; private set; } = 0;
-        public ulong numProperties { get; private set; } = 0;
+        public ulong NumDomains { get; private set; } = 0;
+        public ulong NumProperties { get; private set; } = 0;
         #endregion
 
         protected SaveFile() : base("/") { }
@@ -55,12 +54,12 @@ namespace SFSEd
 
                     var child = new Domain(lastLabel);
                     var parent = openDomains.Peek();
-                    parent.domains.Add(child);
-                    parent.loadOrder.Add(new OrderingEntry(child));
+                    parent.Domains.Add(child);
+                    parent.LoadOrder.Add(new OrderingEntry(child));
                     openDomains.Push(child);
 
                     lastLabel = null;
-                    ++save.numDomains;
+                    ++save.NumDomains;
 
                     continue;
                 }
@@ -75,13 +74,13 @@ namespace SFSEd
                     if (openDomains.Count <= 1)
                         throw new Exception($"{lineNo}: Too many '}}'s");
                     var priorDomain = openDomains.Pop();
-                    if (priorDomain.name == "VESSEL")
+                    if (priorDomain.Name == "VESSEL")
                     {
                         var partNo = 0;
-                        foreach (var child in priorDomain.domains)
+                        foreach (var child in priorDomain.Domains)
                         {
-                            if (child.name == "PART")
-                                child.itemNo = partNo++;
+                            if (child.Name == "PART")
+                                child.ItemNo = partNo++;
                         }
                     }
                     continue;
@@ -97,14 +96,14 @@ namespace SFSEd
                 else
                 {
                     // Otherwise it is a property, i.e a key-value pair.
-                    var key = text.Substring(0, equals).Trim();
-                    var value = text.Substring(equals + 1).TrimStart();
+                    var key = text[0..equals].Trim();
+                    var value = text[(equals + 1)..].TrimStart();
                     var domain = openDomains.Peek();
                     var property = new Property(key, value);
-                    domain.properties.Add(property);
-                    domain.loadOrder.Add(new OrderingEntry(property));
+                    domain.Properties.Add(property);
+                    domain.LoadOrder.Add(new OrderingEntry(property));
 
-                    ++save.numProperties;
+                    ++save.NumProperties;
                 }
             }
 
@@ -114,10 +113,10 @@ namespace SFSEd
         public string AsText(bool saving)
         {
             // I'm going to go ahead and assume that there's only one top-level Domain, called GAME.
-            Contract.Requires(domains.Count == 1);
-            Contract.Requires(properties.Count == 0);
-            Contract.Requires(domains[0].name == "GAME");
-            return domains[0].AsText(saving);
+            Contract.Requires(Domains.Count == 1);
+            Contract.Requires(Properties.Count == 0);
+            Contract.Requires(Domains[0].Name == "GAME");
+            return Domains[0].AsText(saving);
         }
 
         public void Save(string filename)

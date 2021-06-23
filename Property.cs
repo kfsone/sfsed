@@ -12,40 +12,40 @@ namespace SFSEd
         //! Constructor.
         public Property(string key, string value)
         {
-            this.key = key;
-            this.source = value;
+            this.Key = key;
+            this.Source = value;
             this._current = null;
             this._pending = null;
         }
 
         public void Render(ListViewItem into)
         {
-            into.SubItems[1].Text = pending;
-            into.ForeColor = pending != current ? Color.DarkRed : Form.DefaultForeColor;
+            into.SubItems[1].Text = Pending;
+            into.ForeColor = Pending != Current ? Color.DarkRed : Form.DefaultForeColor;
         }
 
         public void Synchronize()
         {
             if (_pending != null)
             {
-                _current = (_pending != source) ? _pending : null;
+                _current = (_pending != Source) ? _pending : null;
                 _pending = null;
             }
         }
 
         #region Members
         //! key is the label or name of this field.
-        public string key { get; }
+        public string Key { get; }
         //! value we saw on load.
-        public string source { get; }
+        public string Source { get; }
         //! Last value we saved, or null if unchanged
         private string _current = null;
-        public string current { get => _current ?? source; }
+        public string Current { get => _current ?? Source; }
         //! Value we need to write to disk or null
         private string _pending = null;
-        public string pending { get => _pending ?? current; set => _pending = (value != current) ? value : null; }
+        public string Pending { get => _pending ?? Current; set => _pending = (value != Current) ? value : null; }
         //! value we originally loaded from disk
-        public bool isChanged => _pending != null;
+        public bool IsChanged => _pending != null;
         #endregion
     };
 }
