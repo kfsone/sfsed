@@ -19,19 +19,24 @@
 </Description>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <NeutralLanguage>en</NeutralLanguage>
+    <Nullable>annotations</Nullable>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <PlatformTarget>AnyCPU</PlatformTarget>
     <NoWarn />
+    <WarningLevel>5</WarningLevel>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <NoWarn />
+    <WarningLevel>5</WarningLevel>
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="Properties\sfsed-icon.png" Pack="true" PackagePath=""/>
+    <Content Include="Properties\sfsed-icon.png" Pack="true" PackagePath="" />
     <None Include="LICENSE" Pack="true" PackagePath="" />
   </ItemGroup>
 
